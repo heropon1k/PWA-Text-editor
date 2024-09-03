@@ -1,6 +1,7 @@
 import { Workbox } from 'workbox-window';
+import { deleteDb } from "./database.js";
 import Editor from './editor';
-import './database';
+import './database.js';
 import '../css/style.css';
 
 const main = document.querySelector('#main');
@@ -31,3 +32,17 @@ if ('serviceWorker' in navigator) {
 } else {
   console.error('Service workers are not supported in this browser.');
 }
+
+const setupDeleteButton = (editor) => {
+  const butDelete = document.getElementById("buttonDelete");
+
+  // Click event handler on the `butDelete` element
+  butDelete.addEventListener("click", async () => {
+    console.log("delete button clicked!");
+    localStorage.removeItem("content");
+    await deleteDb();
+    editor.setValue(`
+Your notes have been deleted, Soldier!
+     `);
+  });
+};
